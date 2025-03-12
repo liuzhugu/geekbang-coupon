@@ -9,7 +9,6 @@ import com.liuzhugu.study.geekbang.coupon.calculation.service.intf.CouponCalcula
 import com.liuzhugu.study.geekbang.coupon.calculation.template.CouponTemplateFactory;
 import com.liuzhugu.study.geekbang.coupon.calculation.template.RuleTemplate;
 import com.liuzhugu.study.geekbang.coupon.template.beans.CouponInfo;
-import com.liuzhugu.study.geekbang.coupon.template.beans.CouponTemplateInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

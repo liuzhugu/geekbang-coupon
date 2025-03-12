@@ -107,7 +107,19 @@ public class CouponCustomerServiceImpl implements CouponCustomerService {
         //order清算
         ShoppingCart checkoutInfo = calculationService.calculateOrderPrice(order);
 
-        return null;
+        if(coupon != null) {
+            //如果优惠券没有被结算掉  而用户传递了优惠券  报错提示该订单满足不了优惠条件
+            if (CollectionUtils.isEmpty(checkoutInfo.getCouponInfos())) {
+                log.error("cannot apply coupon to order, couponId={}", coupon.getId());
+                throw new IllegalArgumentException("coupon is not applicable to this order");
+            }
+
+            log.info("update coupon status to used, couponId={}", coupon.getId());
+            coupon.setStatus(CouponStatus.USED);
+            couponDao.save(coupon);
+        }
+
+        return checkoutInfo;
     }
 
     /**
@@ -144,9 +156,25 @@ public class CouponCustomerServiceImpl implements CouponCustomerService {
         return calculationService.simulateOrder(order);
     }
 
+    /**
+     * 逻辑删除优惠券
+     * */
     @Override
     public void deleteCoupon(Long userId, Long couponId) {
+        Coupon example = Coupon.builder()
+                .userId(userId)
+                .id(couponId)
+                .status(CouponStatus.AVAILABLE)
+                .build();
 
+        Coupon coupon = couponDao.findAll(Example.of(example))
+                .stream()
+                .findFirst()
+                // 如果找不到券，就抛出异常
+                .orElseThrow(() -> new RuntimeException("Could not find available coupon"));
+
+        coupon.setStatus(CouponStatus.INACTIVE);
+        couponDao.save(coupon);
     }
 
     /**
