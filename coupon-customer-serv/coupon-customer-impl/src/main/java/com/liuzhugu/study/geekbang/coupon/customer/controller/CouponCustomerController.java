@@ -1,10 +1,8 @@
 package com.liuzhugu.study.geekbang.coupon.customer.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.ShoppingCart;
 import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.SimulationOrder;
 import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.SimulationResponse;
-import com.liuzhugu.study.geekbang.coupon.calculation.service.intf.CouponCalculationService;
 import com.liuzhugu.study.geekbang.coupon.customer.api.beans.RequestCoupon;
 import com.liuzhugu.study.geekbang.coupon.customer.api.beans.SearchCoupon;
 import com.liuzhugu.study.geekbang.coupon.customer.dao.entity.Coupon;
@@ -25,7 +23,7 @@ public class CouponCustomerController {
     @Autowired
     private CouponCustomerService customerService;
 
-    //优惠券结算
+    //用户领取优惠券
     @PostMapping("/requestCoupon")
     @ResponseBody
     public Coupon requestCoupon(@Valid @RequestBody RequestCoupon request) {

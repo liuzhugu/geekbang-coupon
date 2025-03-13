@@ -43,6 +43,11 @@
             <artifactId>guava</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
         <!-- Actuator 对微服务端点进行管理和配置监控 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

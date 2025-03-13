@@ -21,5 +21,4 @@
         <module>coupon-template-dao</module>
         <module>coupon-template-impl</module>
     </modules>
-
 </project>

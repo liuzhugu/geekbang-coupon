@@ -36,14 +36,14 @@ public class CouponTemplateController {
     }
 
     //读取优惠券
-    @PostMapping("/getTemplate")
+    @GetMapping("/getTemplate")
     public CouponTemplateInfo getTemplate(@RequestParam("id") Long id) {
         log.info("load template: id={}",id);
         return couponTemplateService.loadTemplateInfo(id);
     }
 
     //批量获取
-    @PostMapping("/getBatch")
+    @GetMapping("/getBatch")
     public Map<Long,CouponTemplateInfo> getTemplateInBatch(@RequestParam("ids") Collection<Long> ids) {
         log.info("getTemplateInBatch: {}",JSON.toJSONString(ids));
         return couponTemplateService.getTemplateInfoMap(ids);
@@ -57,7 +57,7 @@ public class CouponTemplateController {
     }
 
     //优惠券无效化
-    @PostMapping("/deleteTemplate")
+    @DeleteMapping("/deleteTemplate")
     public void deleteTemplate(@RequestParam("id") Long id) {
         log.info("delete template,id:{}",id);
         couponTemplateService.deleteTemplate(id);
