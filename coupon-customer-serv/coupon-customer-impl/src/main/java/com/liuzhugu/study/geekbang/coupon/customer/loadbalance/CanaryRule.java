@@ -56,7 +56,7 @@ public class CanaryRule implements ReactorServiceInstanceLoadBalancer {
         //对金丝雀标记进行处理  得到响应
         Response<ServiceInstance> serviceInstanceResponse = getInstanceResponse(serviceInstances,request);
 
-        //
+        //降级逻辑
         if (supplier instanceof SelectedInstanceCallback &&
                 serviceInstanceResponse.hasServer()) {
             ((SelectedInstanceCallback) supplier).selectedServiceInstance(serviceInstanceResponse.getServer());
