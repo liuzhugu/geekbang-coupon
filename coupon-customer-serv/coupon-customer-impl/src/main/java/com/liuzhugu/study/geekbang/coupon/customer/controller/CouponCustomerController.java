@@ -1,5 +1,6 @@
 package com.liuzhugu.study.geekbang.coupon.customer.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.ShoppingCart;
 import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.SimulationOrder;
 import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.SimulationResponse;
@@ -34,12 +35,21 @@ public class CouponCustomerController {
     //用户领取优惠券
     @PostMapping("/requestCoupon")
     @ResponseBody
+    @SentinelResource(value = "customer-requestCoupon")
     public Coupon requestCoupon(@Valid @RequestBody RequestCoupon request) {
         if(disableCoupon) {
             log.info("暂停领取优惠券");
             return null;
         }
         return customerService.requestCoupon(request);
+    }
+
+    //查找优惠券
+    @PostMapping("/findCoupon")
+    @ResponseBody
+    @SentinelResource(value = "customer-findCoupon")
+    public List<CouponInfo> findCoupon(@Valid @RequestBody SearchCoupon request) {
+        return customerService.findCoupon(request);
     }
 
     //用户删除优惠券 - 非物理删除
@@ -62,10 +72,4 @@ public class CouponCustomerController {
         return customerService.placeOrder(info);
     }
 
-    //查找优惠券
-    @PostMapping("/findCoupon")
-    @ResponseBody
-    public List<CouponInfo> findCoupon(@Valid @RequestBody SearchCoupon request) {
-        return customerService.findCoupon(request);
-    }
 }
