@@ -7,6 +7,7 @@ import com.liuzhugu.study.geekbang.coupon.calculation.api.beans.SimulationRespon
 import com.liuzhugu.study.geekbang.coupon.customer.api.beans.RequestCoupon;
 import com.liuzhugu.study.geekbang.coupon.customer.api.beans.SearchCoupon;
 import com.liuzhugu.study.geekbang.coupon.customer.dao.entity.Coupon;
+import com.liuzhugu.study.geekbang.coupon.customer.event.CouponProducer;
 import com.liuzhugu.study.geekbang.coupon.customer.service.intf.CouponCustomerService;
 import com.liuzhugu.study.geekbang.coupon.template.beans.CouponInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,11 @@ import java.util.List;
 //开启才能让Nacos Config将变动的属性同步进来  否则不会刷新
 @RefreshScope
 public class CouponCustomerController {
-
     @Autowired
     private CouponCustomerService customerService;
+
+    @Autowired
+    private CouponProducer  couponProducer;
 
     //业务开关  通过配置修改值而动态开闭  控制业务逻辑  设置默认值
     @Value("${disableCouponRequest:false}")
@@ -72,4 +75,15 @@ public class CouponCustomerController {
         return customerService.placeOrder(info);
     }
 
+    @PostMapping("requestCouponEvent")
+    public void requestCouponEvent(@Valid @RequestBody RequestCoupon request) {
+        couponProducer.sendCoupon(request);
+    }
+
+    // 用户删除优惠券
+    @DeleteMapping("deleteCouponEvent")
+    public void deleteCouponEvent(@RequestParam("userId") Long userId,
+                                  @RequestParam("couponId") Long couponId) {
+        couponProducer.deleteCoupon(userId, couponId);
+    }
 }

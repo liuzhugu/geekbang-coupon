@@ -32,7 +32,7 @@ public class RedisLimitationConfig {
     //customer服务限流规则
     @Bean("customerRateLimiter")
     public RedisRateLimiter customerRateLimiter() {
-        return new RedisRateLimiter(20,40);
+        return new RedisRateLimiter(1,1);
     }
 
     //默认

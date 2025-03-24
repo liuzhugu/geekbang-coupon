@@ -24,7 +24,6 @@ public class SimulationOrder {
 
     private List<CouponInfo> couponInfos;
 
-    @NotEmpty
     private Long userId;
 }
 

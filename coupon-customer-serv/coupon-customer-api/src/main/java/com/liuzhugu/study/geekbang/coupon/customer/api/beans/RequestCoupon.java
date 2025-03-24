@@ -17,7 +17,4 @@ public class RequestCoupon {
     //券模板ID
     @NotNull
     private Long couponTemplateId;
-
-    //Loadbalancer - 用作流量打标
-    private String trafficVersion;
 }

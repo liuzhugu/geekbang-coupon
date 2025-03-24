@@ -9,7 +9,6 @@ import org.springframework.cloud.loadbalancer.core.NoopServiceInstanceListSuppli
 import org.springframework.cloud.loadbalancer.core.ReactorServiceInstanceLoadBalancer;
 import org.springframework.cloud.loadbalancer.core.SelectedInstanceCallback;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
-import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
@@ -24,7 +23,7 @@ import static com.liuzhugu.study.geekbang.coupon.customer.constant.Constant.TRAF
  * 金丝雀负载均衡策略
  * */
 @Slf4j
-public class CanaryRule implements ReactorServiceInstanceLoadBalancer {
+public class CanaryRule {
 
     private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
     private String serviceId;
@@ -40,7 +39,6 @@ public class CanaryRule implements ReactorServiceInstanceLoadBalancer {
     }
 
     //负载均衡策略选择器的入口
-    @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
         ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider
                 //初始化
