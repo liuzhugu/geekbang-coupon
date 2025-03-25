@@ -101,7 +101,7 @@ spring:
           consumer:
             # 如果最大尝试次数为1，即不重试
             # 默认是做3次尝试
-            max-attempts: 1
+            max-attempts: 3
             # 两次重试之间的初始间隔
             backOffInitialInterval: 2000
             # 重试最大间隔
@@ -109,8 +109,8 @@ spring:
             # 每次重试后，间隔时间乘以的系数
             backOffMultiplier: 2
             # 如果某个异常你不想重试，写在这里
-        #            retryableExceptions:
-        #              java.lang.IllegalArgumentException: false
+            #retryableExceptions:
+              #java.lang.IllegalArgumentException: false
         # 删除coupon - Producer
         deleteCoupon-out-0:
           destination: delete-coupon-topic
@@ -124,9 +124,36 @@ spring:
           binder: my-rabbit
           # 最大尝试次数为1，如果不设置的话，默认是做3次尝试
           consumer:
+            max-attempts: 3
+        addCouponDelay-out-0:
+          destination: request-coupon-delayed-topic
+          content-type: application/json
+          binder: my-rabbit
+        addCouponDelay-in-0:
+          destination: request-coupon-delayed-topic
+          content-type: application/json
+          group: add-coupon-group
+          binder: my-rabbit
+          consumer:
             max-attempts: 1
       function:
-        definition: addCoupon;deleteCoupon
+        definition: addCoupon;deleteCoupon;addCouponDelay
+      rabbit:
+        bindings:
+          # requeue重试   失败的时候重新回到队列   根据轮询由其他消费者处理
+          # addCoupon-in-0:
+          #  consumer:
+          #   requeue-rejected: true
+          addCouponDelay-out-0:
+            producer:
+              delayed-exchange: true
+          addCouponDelay-in-0:
+            consumer:
+              delayed-exchange: true
+          deleteCoupon-in-0:
+            consumer:
+              auto-bind-dlq: true
+  #      default-binder: rabbit
 
   sleuth:
     sampler:

@@ -24,7 +24,16 @@ public class CouponConsumer {
     @Bean
     public Consumer<RequestCoupon> addCoupon() {
         return request -> {
-            log.info("received: {}",request);
+            log.info("addCoupon received: {}",request);
+            customerService.requestCoupon(request);
+        };
+    }
+
+    //延迟消息
+    @Bean
+    public Consumer<RequestCoupon> addCouponDelay() {
+        return request -> {
+            log.info("addCouponDelay received: {}",request);
             customerService.requestCoupon(request);
         };
     }
@@ -32,7 +41,7 @@ public class CouponConsumer {
     @Bean
     public Consumer<String> deleteCoupon() {
         return request -> {
-            log.info("received: {}",request);
+            log.info("deleteCoupon received: {}",request);
             List<Long> params = Arrays.stream(request.split(","))
                     .map(Long::valueOf)
                     .collect(Collectors.toList());
@@ -40,12 +49,12 @@ public class CouponConsumer {
         };
     }
 
-//    //消费失败后触发一段降级流程
-//    //如果设置了多次本地重试   那么只有最后一次重试失败才会执行这段降级流程
-//    @ServiceActivator(inputChannel = "request-coupon-topic.add-coupon-group.errors")
-//    public void requestCouponFallback(ErrorMessage errorMessage) throws Exception {
-//        log.info("consumer error: {}",errorMessage);
-//
-//        throw new RuntimeException("打到死信队列");
-//    }
+    //消费失败后触发一段降级流程
+    //如果设置了多次本地重试   那么只有最后一次重试失败才会执行这段降级流程
+    @ServiceActivator(inputChannel = "request-coupon-topic.add-coupon-group.errors")
+    public void requestCouponFallback(ErrorMessage errorMessage) throws Exception {
+        log.info("consumer error: {}",errorMessage);
+
+        throw new RuntimeException("打到死信队列");
+    }
 }

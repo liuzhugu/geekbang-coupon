@@ -80,6 +80,11 @@ public class CouponCustomerController {
         couponProducer.sendCoupon(request);
     }
 
+    @PostMapping("requestCouponDelayEvent")
+    public void requestCouponDelayEvent(@Valid @RequestBody RequestCoupon request) {
+        couponProducer.sendCouponInDelay(request);
+    }
+
     // 用户删除优惠券
     @DeleteMapping("deleteCouponEvent")
     public void deleteCouponEvent(@RequestParam("userId") Long userId,
