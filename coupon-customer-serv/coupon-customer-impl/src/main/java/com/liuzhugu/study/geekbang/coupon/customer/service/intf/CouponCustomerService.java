@@ -24,6 +24,8 @@ public interface CouponCustomerService {
 
     void deleteCoupon(Long userId,Long couponId);
 
+    void deleteCouponTemplate(Long templateId);
+
     //查询用户优惠券
     List<CouponInfo> findCoupon(SearchCoupon request);
 }

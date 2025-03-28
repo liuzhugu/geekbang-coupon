@@ -4,6 +4,7 @@ import com.liuzhugu.study.geekbang.coupon.customer.feign.callback.TemplateServic
 import com.liuzhugu.study.geekbang.coupon.customer.feign.callback.TemplateServiceFallbackFactory;
 import com.liuzhugu.study.geekbang.coupon.template.beans.CouponTemplateInfo;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,4 +26,8 @@ public interface TemplateService {
     //批量获取
     @GetMapping("/getBatch")
     Map<Long,CouponTemplateInfo> getTemplateInBatch(@RequestParam("ids")Collection<Long> ids);
+
+    //将券模板失效
+    @DeleteMapping("/deleteTemplate")
+    void deleteTemplate(@RequestParam("id")Long id);
 }

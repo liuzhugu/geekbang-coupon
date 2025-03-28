@@ -24,7 +24,7 @@ public interface CouponTemplateDao extends JpaRepository<CouponTemplate,Long> {
     //根据shop ID + 可用状态查询店铺有多少优惠券模板
     Integer countByShopIdAndAvailable(Long shopId,boolean available);
 
-    //将优惠券设为不可用
+    //将优惠券模板设为不可用
     @Modifying
     @Query("update CouponTemplate c set c.available = 0 where c.id = :id")
     int makeCouponUnavailable(@Param("id") Long id);

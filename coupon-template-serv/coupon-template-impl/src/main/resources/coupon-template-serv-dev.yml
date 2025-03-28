@@ -73,9 +73,28 @@ spring:
         probability: 1.0
         # 每秒采样数字最高为1000
         rate: 1000
+    alibaba:
+      seata:
+        # seata默认txn分组名称，默认是application+一段seata特定字符串
+        # 我随便指定了一段分组
+        tx-service-group: seata-server-group
   zipkin:
     sender:
       type: rabbit
     rabbitmq:
       addresses: 127.0.0.1:5672
       queue: zipkin
+
+seata:
+  application-id: coupon-template-serv
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: localhost:8848
+      namespace: dev
+      group: myGroup
+      cluster: default
+  service:
+    vgroup-mapping:
+      seata-server-group: default

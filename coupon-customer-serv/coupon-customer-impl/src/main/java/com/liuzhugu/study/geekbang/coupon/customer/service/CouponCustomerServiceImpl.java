@@ -192,6 +192,20 @@ public class CouponCustomerServiceImpl implements CouponCustomerService {
     }
 
     /**
+     * 删除券模板
+     * */
+    @Override
+    @Transactional
+    public void deleteCouponTemplate(Long templateId) {
+        //删除券模板
+        templateService.deleteTemplate(templateId);
+        //删除券模板对应的所有优惠券
+        couponDao.deleteCouponInBatch(templateId,CouponStatus.INACTIVE);
+
+        throw new RuntimeException("AT分布式事务挂球了");
+    }
+
+    /**
      * 用户查询优惠券
      * */
     @Override

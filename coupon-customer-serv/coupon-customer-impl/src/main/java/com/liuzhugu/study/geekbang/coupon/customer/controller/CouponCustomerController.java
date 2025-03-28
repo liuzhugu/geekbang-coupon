@@ -10,6 +10,7 @@ import com.liuzhugu.study.geekbang.coupon.customer.dao.entity.Coupon;
 import com.liuzhugu.study.geekbang.coupon.customer.event.CouponProducer;
 import com.liuzhugu.study.geekbang.coupon.customer.service.intf.CouponCustomerService;
 import com.liuzhugu.study.geekbang.coupon.template.beans.CouponInfo;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +60,13 @@ public class CouponCustomerController {
     @DeleteMapping("/deleteCoupon")
     public void deleteCoupon(@RequestParam("userId") Long userId,@RequestParam("couponId") Long couponId) {
         customerService.deleteCoupon(userId, couponId);
+    }
+
+    //用户删除券模板
+    @DeleteMapping("/deleteTemplate")
+    @GlobalTransactional(name = "coupon-customer-serv",rollbackFor = Exception.class)
+    public void deleteTemplate(@RequestParam("templateId") Long templateId) {
+        customerService.deleteCouponTemplate(templateId);
     }
 
     //用户模拟计算每个优惠券的优惠价格
